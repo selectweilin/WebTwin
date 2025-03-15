@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Extractor - Pixel Perfect Clone</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .loading {
+            display: none;
+        }
+        .loading.active {
+            display: block;
+        }
+        .progress-bar {
+            transition: width 0.3s ease-in-out;
+        }
+        .feature-badge {
+            background-color: #ebf8ff;
+            color: #3182ce;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <div class="flex items-center justify-between mb-6">
+                <h1 class="text-4xl font-bold text-gray-800">Website Extractor</h1>
+            </div>
+            <p class="text-center text-gray-600 mb-8">Create pixel-perfect clones of any website</p>
+            
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <form id="extractForm" class="space-y-4">
+                    <div>
+                        <label for="url" class="block text-sm font-medium text-gray-700">Website URL</label>
+                        <input type="url" id="url" name="url" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                               placeholder="https://example.com">
+                        <p class="mt-1 text-sm text-gray-500">Enter the complete URL of the website you want to clone</p>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="use_selenium" name="use_selenium" value="true" 
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="use_selenium" class="ml-2 block text-sm text-gray-900">
+                            Use advanced rendering (Selenium)
+                            <span class="feature-badge">RECOMMENDED</span>
+                        </label>
+                    </div>
+                    <p class="text-xs text-gray-500 -mt-2 ml-6">Renders JavaScript and scrolls through the page to capture all content. Recommended for modern websites with dynamic content.</p>
+                    
+                    <button type="submit"
+                            class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Extract Website
+                    </button>
+                </form>
+                
+                <div id="loading" class="loading mt-6">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-center">
+                            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-600 mb-2">Extracting website assets...</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="progressBar" class="progress-bar bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <p id="progressText" class="text-sm text-gray-500 mt-2">Initializing...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="error" class="hidden mt-4 p-4 bg-red-100 text-red-700 rounded-md"></div>
+                
+                <div id="success" class="hidden">
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <p class="font-bold text-lg">Website extracted successfully!</p>
+                        </div>
+                        <div class="success-message mt-2">
+                            <p>Your download should start automatically. If not, click the button below:</p>
+                            <div class="mt-3 flex justify-center">
+                                <button id="direct-download" class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md font-bold flex items-center text-lg">
+                                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                    </svg>
+                                    Click here to download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Enhanced Extraction Features</h2>
+                <ul class="space-y-2 text-gray-600">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Complete HTML DOM structure
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        All CSS stylesheets (external and inline)
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        globals.css and styling files
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        JavaScript files and functionality
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Next.js configuration and files
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Image configurations and assets
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Metadata extraction
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Mobile-specific components
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        SVG graphics (both linked and inline)
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Video files and player components
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Audio files and player components
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Font files and font family detection
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        GIF animations and dynamic content
+                        <span class="feature-badge">NEW</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Screenshots of website and components 
+                        <span class="feature-badge bg-indigo-100 text-indigo-700">PREMIUM</span>
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        JavaScript-rendered content capture
+                        <span class="feature-badge bg-indigo-100 text-indigo-700">PREMIUM</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Extracted UI Components</h2>
+                <p class="text-gray-600 mb-4">The tool automatically identifies and extracts key UI components for easy reuse:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Navigation</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Headers, menus, and navigation bars with responsive design</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Hero Sections</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Eye-catching hero banners with images, text overlays, and call-to-action buttons</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Store Pages</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Complete store layouts with product listings, filters, and shopping functionality</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Mobile Menus</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Mobile-specific navigation components and responsive design elements</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Product Grids</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Product listings and card grids with images, pricing, and descriptions</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Shopping Cart</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Cart components with item listings, quantity controls, and checkout buttons</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Carousels & Sliders</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Image sliders, product carousels, and testimonial rotators with controls</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Video Players</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Custom video player components with controls and responsive design</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Audio Players</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Audio playback components with controls and playlist functionality</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Tab Components</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Tabbed interfaces with content panels and interactive navigation</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Social Media</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Social media links, sharing buttons, and embedded social feeds</p>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                            <h3 class="font-medium">Modals & Popups</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <p class="text-sm text-gray-600">Modals, popup dialogs, and overlay components with animations</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-4 bg-blue-50 text-blue-700 rounded-md">
+                    <p class="font-medium">Components Included in ZIP File</p>
+                    <p class="text-sm mt-1">All extracted UI components are included in the downloaded ZIP file for easy access and reuse.</p>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Framework Support</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Next.js</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>next.config.js extraction</li>
+                            <li>_app.js and _document.js</li>
+                            <li>Static and dynamic routes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Tailwind CSS</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>tailwind.config.js extraction</li>
+                            <li>Custom theme settings</li>
+                            <li>Plugin configurations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">React</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Component structure detection</li>
+                            <li>React-specific attributes</li>
+                            <li>State management patterns</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Vue.js</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Vue component detection</li>
+                            <li>vue.config.js extraction</li>
+                            <li>Vue directives parsing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Angular</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Angular component structure</li>
+                            <li>angular.json configuration</li>
+                            <li>Module detection</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Bootstrap</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Bootstrap component classes</li>
+                            <li>Grid system extraction</li>
+                            <li>Custom Bootstrap themes</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">SCSS/SASS</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Variable definitions</li>
+                            <li>Mixin extraction</li>
+                            <li>Nested styles</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Svelte</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Svelte component format</li>
+                            <li>Reactive declarations</li>
+                            <li>Template structure</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <h3 class="font-medium">Material UI</h3>
+                            <span class="feature-badge">NEW</span>
+                        </div>
+                        <ul class="text-sm text-gray-600 list-disc pl-5 mt-2 space-y-1">
+                            <li>Material component classes</li>
+                            <li>Theme configuration</li>
+                            <li>Material icons</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">How to Use the Clone</h2>
+                <ol class="list-decimal pl-5 space-y-2 text-gray-600">
+                    <li>Extract the downloaded ZIP file</li>
+                    <li>Open the <code class="bg-gray-100 px-1 py-0.5 rounded">index.html</code> file in your browser to view the static clone</li>
+                    <li>Find extracted components in the <code class="bg-gray-100 px-1 py-0.5 rounded">components</code> folder</li>
+                    <li>Review metadata in <code class="bg-gray-100 px-1 py-0.5 rounded">metadata.json</code></li>
+                    <li>Check <code class="bg-gray-100 px-1 py-0.5 rounded">css/globals.css</code> for global styling</li>
+                    <li>Edit the HTML, CSS, and JavaScript files in Cursor to customize the design</li>
+                    <li>Use the included <code class="bg-gray-100 px-1 py-0.5 rounded">manifest.json</code> file to locate specific assets</li>
+                </ol>
+                <div class="mt-4 p-4 bg-blue-50 text-blue-700 rounded-md">
+                    <p class="font-medium">Pro Tip:</p>
+                    <p class="text-sm mt-1">For the most accurate results, try cloning the desktop version of websites. Some sites may have anti-scraping measures that could affect the results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('extractForm');
+            const loading = document.getElementById('loading');
+            const error = document.getElementById('error');
+            const success = document.getElementById('success');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            
+            // Progress simulation values
+            let progressInterval;
+            let currentProgress = 0;
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const url = document.getElementById('url').value.trim();
+                const useSelenium = document.getElementById('use_selenium').checked;
+                
+                if (!url) {
+                    showError('Please enter a valid URL');
+                    return;
+                }
+                
+                // Reset UI state
+                resetState();
+                
+                // Show loading indicator
+                loading.classList.add('active');
+                
+                // Start progress simulation
+                startProgressSimulation();
+                
+                // Create form data
+                const formData = new FormData();
+                formData.append('url', url);
+                formData.append('use_selenium', useSelenium ? 'true' : 'false');
+                
+                // If using Selenium, show info that it might take longer
+                if (useSelenium) {
+                    progressText.textContent = "Initializing browser for advanced rendering (this may take a minute)...";
+                }
+                
+                // Send extraction request
+                fetch('/extract', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    // Clear progress simulation
+                    clearInterval(progressInterval);
+                    
+                    if (response.ok) {
+                        // Set progress to 100%
+                        updateProgress(100, 'Download starting...');
+                        
+                        // Show success message after a short delay
+                        setTimeout(() => {
+                            loading.classList.remove('active');
+                            success.classList.remove('hidden');
+                        }, 1000);
+                        
+                        // Try to get the filename from the Content-Disposition header
+                        const contentDisposition = response.headers.get('Content-Disposition');
+                        let filename = 'website_clone.zip';
+                        
+                        if (contentDisposition) {
+                            const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+                            if (filenameMatch && filenameMatch[1]) {
+                                filename = filenameMatch[1];
+                            }
+                        }
+                        
+                        // Trigger download
+                        return response.blob()
+                            .then(blob => {
+                                if (blob.size < 1000) {
+                                    // If the blob is too small, it might be an error response disguised as a 200
+                                    console.error("Downloaded blob is too small, likely an error response");
+                                    throw new Error("The server returned an empty or invalid file. Please try again.");
+                                }
+                                
+                                // Create a download link
+                                const url = window.URL.createObjectURL(blob);
+                                const a = document.createElement('a');
+                                a.style.display = 'none';
+                                a.href = url;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                
+                                // Show success message immediately with link
+                                loading.classList.remove('active');
+                                success.classList.remove('hidden');
+                                
+                                // Add event listener to the direct download button
+                                const directDownloadBtn = document.getElementById('direct-download');
+                                if (directDownloadBtn) {
+                                    directDownloadBtn.onclick = function() {
+                                        // Create a new anchor element for this click to ensure it works every time
+                                        const downloadLink = document.createElement('a');
+                                        downloadLink.href = url;
+                                        downloadLink.download = filename;
+                                        document.body.appendChild(downloadLink);
+                                        downloadLink.click();
+                                        document.body.removeChild(downloadLink);
+                                        console.log("Manual download initiated via direct download button");
+                                    };
+                                }
+                                
+                                // Display helpful message with alternate download link as a fallback
+                                const successMessage = document.querySelector('.success-message');
+                                if (successMessage) {
+                                    // Add the fallback instructions after the main button
+                                    const fallbackDiv = document.createElement('div');
+                                    fallbackDiv.className = 'mt-4 p-3 bg-blue-50 rounded-md border border-blue-200 text-sm';
+                                    fallbackDiv.innerHTML = `
+                                        <p class="font-medium text-blue-800">If the button doesn't work:</p>
+                                        <a href="${url}" download="${filename}" class="inline-block mt-2 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center text-sm">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                            </svg>
+                                            Alternative download link
+                                        </a>
+                                        <p class="mt-2 text-xs text-blue-600">This link will remain available for 30 minutes.</p>
+                                    `;
+                                    // Append after the main button's parent div
+                                    const mainButtonParent = document.querySelector('.success-message .mt-3');
+                                    if (mainButtonParent && mainButtonParent.nextSibling) {
+                                        mainButtonParent.parentNode.insertBefore(fallbackDiv, mainButtonParent.nextSibling);
+                                    } else if (mainButtonParent) {
+                                        mainButtonParent.parentNode.appendChild(fallbackDiv);
+                                    }
+                                }
+                                
+                                // Try to download using the anchor click method
+                                try {
+                                    setTimeout(() => {
+                                        a.click();
+                                        console.log("Download initiated via click() after showing UI");
+                                    }, 500); // Slight delay to ensure UI is updated first
+                                    
+                                    // Clean up the hidden anchor but keep the blob URL valid for manual download
+                                    setTimeout(() => {
+                                        document.body.removeChild(a);
+                                        // Keep the URL valid for 30 minutes before releasing
+                                        setTimeout(() => {
+                                            window.URL.revokeObjectURL(url);
+                                            console.log("Blob URL revoked after timeout");
+                                            // Update the success message to indicate the link is no longer available
+                                            if (successMessage) {
+                                                const downloadLinks = successMessage.querySelectorAll('a');
+                                                downloadLinks.forEach(link => {
+                                                    link.classList.add('opacity-50', 'cursor-not-allowed');
+                                                    link.classList.remove('hover:bg-blue-700');
+                                                    link.onclick = (e) => { 
+                                                        e.preventDefault();
+                                                        alert('The download link has expired. Please try extracting the website again.');
+                                                    };
+                                                });
+                                                
+                                                // Disable the direct download button as well
+                                                if (directDownloadBtn) {
+                                                    directDownloadBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-gray-500');
+                                                    directDownloadBtn.classList.remove('hover:bg-blue-700', 'bg-blue-600');
+                                                    directDownloadBtn.onclick = (e) => {
+                                                        e.preventDefault();
+                                                        alert('The download link has expired. Please try extracting the website again.');
+                                                    };
+                                                }
+                                                
+                                                const expireMessages = successMessage.querySelectorAll('p.text-xs, p.text-sm');
+                                                expireMessages.forEach(message => {
+                                                    if (message.textContent.includes('available for 30 minutes')) {
+                                                        message.textContent = 'The download link has expired. Please try extracting the website again.';
+                                                        message.classList.remove('text-blue-600');
+                                                        message.classList.add('text-red-600');
+                                                    }
+                                                });
+                                            }
+                                        }, 1800000); // 30 minutes (matching the server-side cleanup)
+                                    }, 1000);
+                                } catch (e) {
+                                    console.error("Error with click method:", e);
+                                    
+                                    // Show user-friendly error and make manual download link more prominent
+                                    if (successMessage) {
+                                        const downloadInfo = successMessage.querySelector('.p-3');
+                                        if (downloadInfo) {
+                                            downloadInfo.classList.remove('bg-blue-50', 'border-blue-200');
+                                            downloadInfo.classList.add('bg-red-50', 'border-red-200');
+                                            
+                                            const titleElement = downloadInfo.querySelector('p.font-medium');
+                                            if (titleElement) {
+                                                titleElement.textContent = 'Automatic download failed:';
+                                                titleElement.classList.remove('text-blue-800');
+                                                titleElement.classList.add('text-red-800');
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Fallback: Open in new tab/window if browser supports it
+                                    try {
+                                        window.open(url, '_blank');
+                                    } catch (tabError) {
+                                        console.error("Error opening in new tab:", tabError);
+                                        // Last resort: Alert the user
+                                        alert("Download couldn't start automatically. Please use the download button on the page");
+                                    }
+                                }
+                            })
+                            .catch(blobError => {
+                                console.error("Error processing blob:", blobError);
+                                loading.classList.remove('active');
+                                showError("Error preparing download: " + blobError.message);
+                            });
+                    } else {
+                        // Show error for non-200 responses
+                        return response.text().then(text => {
+                            console.error("Server response error:", text);
+                            try {
+                                // Try to parse as JSON first
+                                const data = JSON.parse(text);
+                                throw new Error(data.error || 'Failed to extract website');
+                            } catch (jsonError) {
+                                // If not JSON, return the raw text or a generic error
+                                throw new Error(text || 'Failed to extract website');
+                            }
+                        });
+                    }
+                })
+                .catch(err => {
+                    clearInterval(progressInterval);
+                    loading.classList.remove('active');
+                    console.error("Fetch error:", err);
+                    showError(err.message || 'An error occurred while extracting the website');
+                });
+            });
+            
+            function resetState() {
+                loading.classList.remove('active');
+                error.classList.add('hidden');
+                success.classList.add('hidden');
+                error.textContent = '';
+                currentProgress = 0;
+                updateProgress(0, 'Initializing...');
+            }
+            
+            function showError(message) {
+                error.textContent = message;
+                error.classList.remove('hidden');
+            }
+            
+            function startProgressSimulation() {
+                // Clear any existing interval
+                if (progressInterval) {
+                    clearInterval(progressInterval);
+                }
+                
+                const useSelenium = document.getElementById('use_selenium').checked;
+                const maxProgress = useSelenium ? 90 : 95; // Leave room for completion
+                
+                progressInterval = setInterval(() => {
+                    if (currentProgress < maxProgress) {
+                        // Slower progress at the beginning
+                        if (currentProgress < 30) {
+                            currentProgress += 0.5;
+                            updateProgress(currentProgress, 'Fetching website content...');
+                        } 
+                        // Increase speed a bit
+                        else if (currentProgress < 60) {
+                            currentProgress += 0.3;
+                            updateProgress(currentProgress, 'Extracting CSS and JavaScript...');
+                        }
+                        // Slower again approaching the end
+                        else if (currentProgress < maxProgress) {
+                            currentProgress += 0.1;
+                            if (useSelenium) {
+                                updateProgress(currentProgress, 'Rendering JavaScript and capturing dynamic content...');
+                            } else {
+                                updateProgress(currentProgress, 'Downloading assets and creating ZIP file...');
+                            }
+                        }
+                    }
+                }, 100);
+            }
+            
+            function updateProgress(value, text) {
+                progressBar.style.width = `${value}%`;
+                progressText.textContent = text;
+            }
+        });
+    </script>
+</body>
+</html> 

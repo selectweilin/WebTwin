@@ -159,16 +159,74 @@ After extracting a website:
 
 ## Architecture
 
-The application is built with a modular architecture:
+The application is built with a modular architecture designed for flexibility and performance:
 
-1. **Flask Web Server**: Provides the user interface and API
-2. **HTTP Client**: Makes requests to fetch website content
-3. **Selenium Renderer**: Optional component for JavaScript rendering
-4. **Content Parser**: Analyzes HTML to extract assets and structure
-5. **Asset Downloader**: Downloads all discovered assets
-6. **ZIP Creator**: Packages everything for download
+```
+┌───────────────────────────────────────────────────────────────────┐
+│                    Website Extractor Application                   │
+└───────────────────────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+┌───────────────────────────────────────────────────────────────────┐
+│                           Flask Web Server                         │
+└───────────────────────────────────────────────────────────────────┘
+                                  │
+                                  ▼
+┌───────────────────────────────────────────────────────────────────┐
+│                      Extraction Core Processes                     │
+├───────────────┬──────────────────┬──────────────────┬─────────────┤
+│  HTTP Client  │ Selenium Renderer │  Content Parser  │ Asset Saver │
+│ (requests)    │ (WebDriver)       │ (BeautifulSoup)  │ (Zip)       │
+└───────────────┴──────────────────┴──────────────────┴─────────────┘
+```
 
-For more details, see [app_architecture.md](app_architecture.md).
+### Data Flow
+
+```
+┌──────────┐    URL     ┌──────────┐  HTML Content  ┌──────────────┐
+│  User    │───────────▶│ Extractor│───────────────▶│ HTML Parser  │
+└──────────┘            └──────────┘                └──────────────┘
+                             │                             │
+                   Rendering │                             │ Asset URLs
+                     option  │                             │
+                             ▼                             ▼
+                      ┌──────────┐                  ┌──────────────┐
+                      │ Selenium │                  │ Asset        │
+                      │ WebDriver│                  │ Downloader   │
+                      └──────────┘                  └──────────────┘
+                             │                             │
+                     Rendered│                      Assets │
+                       HTML  │                             │
+                             ▼                             ▼
+                      ┌──────────────────────────────────────────┐
+                      │            Zip File Creator              │
+                      └──────────────────────────────────────────┘
+                                          │
+                                          ▼
+                      ┌──────────────────────────────────────────┐
+                      │      File Download Response to User      │
+                      └──────────────────────────────────────────┘
+```
+
+### Key Components
+
+1. **Flask Web Server**: Provides the user interface and handles HTTP requests
+2. **HTTP Client**: Makes requests to fetch website content using the Requests library
+3. **Selenium Renderer**: Optional component for JavaScript rendering and dynamic content
+4. **Content Parser**: Analyzes HTML to extract assets and structure using BeautifulSoup
+5. **Asset Downloader**: Downloads all discovered assets with sophisticated retry logic
+6. **ZIP Creator**: Packages everything into an organized downloadable archive
+
+### Processing Stages
+
+1. **URL Submission**: User provides a URL and rendering options
+2. **Content Acquisition**: HTML content is fetched (with or without JavaScript rendering)
+3. **Structure Analysis**: HTML is parsed and analyzed for assets and components
+4. **Asset Discovery**: All linked resources are identified and categorized
+5. **Parallel Downloading**: Assets are downloaded with optimized concurrent requests
+6. **Organization & Packaging**: Files are organized and compressed into a ZIP archive
+
+For more detailed technical information, see [app_architecture.md](app_architecture.md).
 
 ## Limitations
 

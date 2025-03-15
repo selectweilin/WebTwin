@@ -157,6 +157,114 @@ After extracting a website:
    - "How can I implement a similar hero section in my project?"
    - "Analyze this navigation component and create a similar one for my React app"
 
+## AI Agent Integration
+
+WebTwin can be a powerful tool when combined with AI agents, enabling sophisticated workflows for code analysis, design extraction, and content repurposing.
+
+### Integration with Cursor AI
+
+Cursor's AI capabilities can be supercharged with WebTwin's extraction abilities:
+
+1. **Extract and Modify Workflow**:
+   ```
+   WebTwin → Extract Site → Open in Cursor → Ask AI to Modify
+   ```
+   Example prompts:
+   - "Convert this landing page to use Tailwind CSS instead of Bootstrap"
+   - "Refactor this JavaScript code to use React hooks"
+   - "Simplify this complex CSS layout while maintaining the same visual appearance"
+
+2. **Component Library Creation**:
+   ```
+   WebTwin → Extract Multiple Sites → Open in Cursor → AI-Powered Component Extraction
+   ```
+   Example prompts:
+   - "Extract all button styles from these websites and create a unified component library"
+   - "Analyze these navigation patterns and create a best-practices implementation"
+
+3. **Learn from Production Code**:
+   ```
+   WebTwin → Extract Complex Site → Cursor AI Analysis → Generate Tutorial
+   ```
+   Example prompts:
+   - "Explain how this site implements its responsive design strategy"
+   - "Show me how this animation effect works and help me implement something similar"
+
+### Integration with OpenAI Assistants API & Agent SDK
+
+WebTwin can be integrated with the OpenAI Assistants API and Agent SDK to create specialized AI agents:
+
+1. **Setup a Website Analysis Agent**:
+   ```python
+   from openai import OpenAI
+   
+   client = OpenAI(api_key="your-api-key")
+   
+   # Create an assistant specialized in web design analysis
+   assistant = client.beta.assistants.create(
+       name="WebDesignAnalyzer",
+       instructions="You analyze websites extracted by WebTwin and provide design insights.",
+       model="gpt-4-turbo",
+       tools=[{"type": "file_search"}]
+   )
+   
+   # Upload the extracted website files
+   file = client.files.create(
+       file=open("extracted_website.zip", "rb"),
+       purpose="assistants"
+   )
+   
+   # Create a thread with the file
+   thread = client.beta.threads.create(
+       messages=[
+           {
+               "role": "user",
+               "content": "Analyze this website's design patterns and component structure",
+               "file_ids": [file.id]
+           }
+       ]
+   )
+   
+   # Run the assistant on the thread
+   run = client.beta.threads.runs.create(
+       thread_id=thread.id,
+       assistant_id=assistant.id
+   )
+   ```
+
+2. **Create a Website Transformation Pipeline**:
+   ```
+   WebTwin → Extract Site → OpenAI Agent Processes → Generate New Code
+   ```
+
+3. **Build a Web Design Critique Agent**:
+   - Feed WebTwin extractions to an AI agent trained to evaluate design principles
+   - Receive detailed feedback on accessibility, usability, and visual design
+
+### Advanced Agent Workflows
+
+Combine WebTwin with AI agents for advanced workflows:
+
+1. **Cross-Site Design Pattern Analysis**:
+   - Extract multiple sites in the same industry
+   - Use AI to identify common patterns and best practices
+   - Generate a report on industry-standard approaches
+
+2. **Automated Component Library Generation**:
+   - Extract multiple sites
+   - Use AI to identify and categorize UI components
+   - Generate a unified component library with documentation
+
+3. **SEO and Content Strategy Analysis**:
+   - Extract content-rich websites
+   - Use AI to analyze content structure, metadata, and keyword usage
+   - Generate SEO recommendations and content strategy insights
+
+4. **Competitive Analysis**:
+   - Extract competitor websites
+   - Use AI to compare features, UX patterns, and technical implementations
+   - Generate a competitive analysis report with strengths and weaknesses
+
 ## Architecture
 
 The application is built with a modular architecture designed for flexibility and performance:

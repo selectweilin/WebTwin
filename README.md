@@ -1,372 +1,409 @@
-# Website Extractor
+# 网站提取器
 
 ![Website Extractor Banner](https://img.shields.io/badge/Website%20Extractor-Advanced-blue)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Overview
+## 概述
 
-Website Extractor is a powerful Python-based tool that allows you to download and archive entire websites with a single click. This application extracts HTML, CSS, JavaScript, images, fonts, and other assets from any website, making it ideal for:
+网站提取器是一个强大的基于 Python 的工具，能够让您一键下载和归档整个网站。此应用程序可以从任何网站提取 HTML、CSS、JavaScript、图像、字体和其他资源，非常适合用于：
 
-- Creating pixel-perfect copies of any website online
-- Training AI agents with real-world web content
-- Studying website structure and design
-- Extracting UI components for design inspiration
-- Archiving web content for research
-- Learning web development techniques
+- 创建任何线上网站的像素级完美副本
+- 使用真实的网站内容训练 AI 代理
+- 研究网站结构和设计
+- 提取 UI 组件以获取设计灵感
+- 为研究目的归档网站内容
+- 学习网站开发技术
 
-The application features advanced rendering capabilities using Selenium, allowing it to properly extract assets from modern JavaScript-heavy websites and single-page applications.
+该应用程序具有使用 Selenium 的高级渲染功能，能够正确地从现代 JavaScript 重度网站和单页应用程序中提取资源。
 
 ![App Architecture Overview](https://raw.githubusercontent.com/username/website-extractor/main/docs/app_architecture_overview.png)
 
-## Features
+## 功能特性
 
-- **Advanced Rendering**: Uses Selenium with Chrome WebDriver to render JavaScript-heavy sites
-- **Comprehensive Asset Extraction**: Downloads HTML, CSS, JavaScript, images, fonts, and more
-- **Metadata Extraction**: Captures site metadata, OpenGraph tags, and structured data
-- **UI Component Analysis**: Identifies and extracts UI components like headers, navigation, cards, etc.
-- **Organized Output**: Creates a well-structured ZIP file with assets organized by type
-- **Responsive Design**: Works with both desktop and mobile websites
-- **CDN Support**: Handles assets from various Content Delivery Networks
-- **Modern Framework Support**: Special handling for React, Next.js, Angular, and Tailwind CSS
+- **高级渲染**：使用 Selenium 和 Chrome WebDriver 渲染 JavaScript 重度网站
+- **全面的资源提取**：下载 HTML、CSS、JavaScript、图像、字体等
+- **元数据提取**：捕获网站元数据、OpenGraph 标签和结构化数据
+- **UI 组件分析**：识别和提取头部、导航、卡片等 UI 组件
+- **有序输出**：创建结构良好的 ZIP 文件，按类型组织资源
+- **响应式设计**：适用于桌面和移动网站
+- **CDN 支持**：处理来自各种 CDN 的资源
+- **现代框架支持**：特别支持 React、Next.js、Angular 和 Tailwind CSS
 
-## Advanced Use Cases
+## 高级应用场景
 
-### Pixel-Perfect Website Copies
-Create exact replicas of websites for study, testing, or inspiration. The advanced rendering engine ensures even complex layouts and JavaScript-driven designs are faithfully reproduced.
+### 像素级完美网站副本
 
-### AI Agent Training
-Extract websites to create high-quality training data for your AI agents:
-- Feed the structured content to AI models to improve their understanding of web layouts
-- Train AI assistants on real-world UI components and design patterns
-- Create diverse datasets of web content for machine learning projects
+为学习、测试或灵感目的创建网站的精确复制品。高级渲染引擎确保甚至复杂的布局和 JavaScript 驱动的设计都能忠实地重现。
 
-### Cursor IDE Integration
-Website Extractor works seamlessly with Cursor IDE:
-- Extract a website and open it directly in Cursor for code analysis
-- Edit the extracted code with Cursor's AI-powered assistance
-- Use the components as reference for your own projects
-- Ask Cursor to analyze the site's structure and styles to apply similar patterns to your work
+### AI 代理训练
 
-### Design Inspiration & Reference
-Upload the extracted folder to your current project and:
-- Ask Cursor to reference its style when building new pages
-- Study professional UI implementations
-- Extract specific components for reuse in your own projects
-- Learn modern CSS techniques from production websites
+提取网站以为您的 AI 代理创建高质量的训练数据：
 
-## Installation
+- 将结构化内容输入 AI 模型，提高其对网站布局的理解
+- 在真实的 UI 组件和设计模式上训练 AI 助手
+- 为机器学习项目创建多样化的网站内容数据集
 
-### Prerequisites
+### Cursor IDE 集成
+
+网站提取器与 Cursor IDE 无缝集成：
+
+- 提取网站并直接在 Cursor 中打开进行代码分析
+- 使用 Cursor 的 AI 助手编辑提取的代码
+- 将组件作为您自己项目的参考
+- 请求 Cursor 分析网站结构和样式，并将类似模式应用到您的工作中
+
+### 设计灵感和参考
+
+将提取的文件夹上传到您当前的项目中：
+
+- 请求 Cursor 在构建新页面时参考其样式
+- 研究专业 UI 实现
+- 提取特定组件以在您自己的项目中重用
+- 从生产网站学习现代 CSS 技术
+
+## 安装
+
+### 前置条件
 
 - Python 3.7+
-- Chrome/Chromium browser (for advanced rendering)
+- Chrome/Chromium 浏览器（用于高级渲染）
 - Git
 
-### Using Cursor (Recommended)
+### 使用 Cursor（推荐）
 
-1. Clone the repository:
+1. 克隆仓库：
+
    ```bash
    git clone https://github.com/sirioberati/WebTwin.git
    cd WebTwin
    ```
 
-2. Open the project in Cursor IDE:
+2. 在 Cursor IDE 中打开项目：
+
    ```bash
    cursor .
    ```
 
-3. Create a virtual environment (within Cursor's terminal):
+3. 创建虚拟环境（在 Cursor 的终端中）：
+
    ```bash
    python -m venv venv
    ```
 
-4. Activate the virtual environment:
-   - On Windows: `venv\Scripts\activate`
-   - On macOS/Linux: `source venv/bin/activate`
+4. 激活虚拟环境：
 
-5. Install dependencies:
+   - Windows 系统：`venv\Scripts\activate`
+   - macOS/Linux 系统：`source venv/bin/activate`
+
+5. 安装依赖：
+
    ```bash
    pip install -r requirements.txt
    ```
 
-### Manual Installation
+### 手动安装
 
-1. Clone the repository:
+1. 克隆仓库：
+
    ```bash
    git clone https://github.com/sirioberati/WebTwin.git
    cd WebTwin
    ```
 
-2. Create a virtual environment:
+2. 创建虚拟环境：
+
    ```bash
    python -m venv venv
    ```
 
-3. Activate the virtual environment:
-   - On Windows: `venv\Scripts\activate`
-   - On macOS/Linux: `source venv/bin/activate`
+3. 激活虚拟环境：
 
-4. Install dependencies:
+   - Windows 系统：`venv\Scripts\activate`
+   - macOS/Linux 系统：`source venv/bin/activate`
+
+4. 安装依赖：
+
    ```bash
    pip install -r requirements.txt
    ```
 
-## Usage
+## 使用方法
 
-1. Activate your virtual environment (if not already activated)
+1. 激活您的虚拟环境（如果尚未激活）
 
-2. Run the application:
+2. 运行应用程序：
+
    ```bash
    python app.py
    ```
 
-3. Open your browser and navigate to:
+3. 打开浏览器并导航到：
+
    ```
    http://127.0.0.1:5001
    ```
 
-4. Enter the URL of the website you want to extract
+4. 输入您要提取的网站的 URL
 
-5. Check "Use Advanced Rendering (Selenium)" for JavaScript-heavy websites
+5. 对于 JavaScript 重度网站，勾选"使用高级渲染 (Selenium)"
 
-6. Click "Extract Website" and wait for the download to complete
+6. 点击"提取网站"并等待下载完成
 
-### Using Advanced Rendering
+### 使用高级渲染
 
-The advanced rendering option uses Selenium with Chrome WebDriver to:
-- Execute JavaScript
-- Render dynamic content
-- Scroll through the page to trigger lazy loading
-- Click on UI elements to expose hidden content
-- Extract resources loaded by JavaScript frameworks
+高级渲染选项使用 Selenium 和 Chrome WebDriver 来：
 
-This option is recommended for modern websites, especially those built with React, Angular, Vue, or other JavaScript frameworks.
+- 执行 JavaScript
+- 渲染动态内容
+- 滚动页面以触发懒加载
+- 点击 UI 元素以显示隐藏内容
+- 提取由 JavaScript 框架加载的资源
 
-### Using with Cursor IDE
+对于现代网站，特别是使用 React、Angular、Vue 或其他 JavaScript 框架构建的网站，推荐使用此选项。
 
-After extracting a website:
+### 与 Cursor IDE 配合使用
 
-1. Unzip the downloaded file to a directory
-2. Open with Cursor IDE:
+提取网站后：
+
+1. 将下载的文件解压到目录中
+2. 使用 Cursor IDE 打开：
+
    ```bash
    cursor /path/to/extracted/website
    ```
-3. Explore the code structure and assets
-4. Ask Cursor AI to analyze the code with prompts like:
-   - "Explain the CSS structure of this website"
-   - "How can I implement a similar hero section in my project?"
-   - "Analyze this navigation component and create a similar one for my React app"
 
-## AI Agent Integration
+3. 探索代码结构和资源
+4. 使用类似以下提示让 Cursor AI 分析代码：
+   - "解释这个网站的 CSS 结构"
+   - "我如何在我的项目中实现类似的英雄区块？"
+   - "分析这个导航组件并为我的 React 应用创建一个类似的组件"
 
-WebTwin can be a powerful tool when combined with AI agents, enabling sophisticated workflows for code analysis, design extraction, and content repurposing.
+## AI 代理集成
 
-### Integration with Cursor AI
+WebTwin 与 AI 代理结合使用时可以成为强大的工具，能够实现复杂的代码分析、设计提取和内容重用工作流程。
 
-Cursor's AI capabilities can be supercharged with WebTwin's extraction abilities:
+### 与 Cursor AI 集成
 
-1. **Extract and Modify Workflow**:
+Cursor 的 AI 功能可以通过 WebTwin 的提取能力得到增强：
+
+1. **提取和修改工作流程**：
+
    ```
-   WebTwin → Extract Site → Open in Cursor → Ask AI to Modify
+   WebTwin → 提取网站 → 在 Cursor 中打开 → 请求 AI 修改
    ```
-   Example prompts:
-   - "Convert this landing page to use Tailwind CSS instead of Bootstrap"
-   - "Refactor this JavaScript code to use React hooks"
-   - "Simplify this complex CSS layout while maintaining the same visual appearance"
 
-2. **Component Library Creation**:
+   示例提示：
+
+   - "将这个着陆页转换为使用 Tailwind CSS 而不是 Bootstrap"
+   - "重构这个 JavaScript 代码以使用 React hooks"
+   - "简化这个复杂的 CSS 布局，同时保持相同的视觉外观"
+
+2. **组件库创建**：
+
    ```
-   WebTwin → Extract Multiple Sites → Open in Cursor → AI-Powered Component Extraction
+   WebTwin → 提取多个网站 → 在 Cursor 中打开 → AI 驱动的组件提取
    ```
-   Example prompts:
-   - "Extract all button styles from these websites and create a unified component library"
-   - "Analyze these navigation patterns and create a best-practices implementation"
 
-3. **Learn from Production Code**:
+   示例提示：
+
+   - "从这些网站中提取所有按钮样式并创建统一的组件库"
+   - "分析这些导航模式并创建最佳实践实现"
+
+3. **从生产代码学习**：
+
    ```
-   WebTwin → Extract Complex Site → Cursor AI Analysis → Generate Tutorial
+   WebTwin → 提取复杂网站 → Cursor AI 分析 → 生成教程
    ```
-   Example prompts:
-   - "Explain how this site implements its responsive design strategy"
-   - "Show me how this animation effect works and help me implement something similar"
 
-### Integration with OpenAI Assistants API & Agent SDK
+   示例提示：
 
-WebTwin can be integrated with the OpenAI Assistants API and Agent SDK to create specialized AI agents:
+   - "解释这个网站如何实现其响应式设计策略"
+   - "向我展示这个动画效果的工作原理并帮我实现类似的效果"
 
-1. **Setup a Website Analysis Agent**:
+### 与 OpenAI Assistants API 和 Agent SDK 集成
+
+WebTwin 可以与 OpenAI Assistants API 和 Agent SDK 集成，创建专门的 AI 代理：
+
+1. **设置网站分析代理**：
+
    ```python
    from openai import OpenAI
-   
+
    client = OpenAI(api_key="your-api-key")
-   
-   # Create an assistant specialized in web design analysis
+
+   # 创建专门用于网站设计分析的助手
    assistant = client.beta.assistants.create(
        name="WebDesignAnalyzer",
-       instructions="You analyze websites extracted by WebTwin and provide design insights.",
+       instructions="您分析由 WebTwin 提取的网站并提供设计见解。",
        model="gpt-4-turbo",
        tools=[{"type": "file_search"}]
    )
-   
-   # Upload the extracted website files
+
+   # 上传提取的网站文件
    file = client.files.create(
        file=open("extracted_website.zip", "rb"),
        purpose="assistants"
    )
-   
-   # Create a thread with the file
+
+   # 创建包含文件的会话
    thread = client.beta.threads.create(
        messages=[
            {
                "role": "user",
-               "content": "Analyze this website's design patterns and component structure",
+               "content": "分析这个网站的设计模式和组件结构",
                "file_ids": [file.id]
            }
        ]
    )
-   
-   # Run the assistant on the thread
+
+   # 在会话上运行助手
    run = client.beta.threads.runs.create(
        thread_id=thread.id,
        assistant_id=assistant.id
    )
    ```
 
-2. **Create a Website Transformation Pipeline**:
+2. **创建网站转换管道**：
+
    ```
-   WebTwin → Extract Site → OpenAI Agent Processes → Generate New Code
+   WebTwin → 提取网站 → OpenAI 代理处理 → 生成新代码
    ```
 
-3. **Build a Web Design Critique Agent**:
-   - Feed WebTwin extractions to an AI agent trained to evaluate design principles
-   - Receive detailed feedback on accessibility, usability, and visual design
+3. **构建网站设计评判代理**：
 
-### Advanced Agent Workflows
+   - 将 WebTwin 提取的内容提供给训练有素的 AI 代理以评估设计原则
+   - 获得关于可访问性、可用性和视觉设计的详细反馈
 
-Combine WebTwin with AI agents for advanced workflows:
+### 高级代理工作流程
 
-1. **Cross-Site Design Pattern Analysis**:
-   - Extract multiple sites in the same industry
-   - Use AI to identify common patterns and best practices
-   - Generate a report on industry-standard approaches
+将 WebTwin 与 AI 代理结合用于高级工作流程：
 
-2. **Automated Component Library Generation**:
-   - Extract multiple sites
-   - Use AI to identify and categorize UI components
-   - Generate a unified component library with documentation
+1. **跨网站设计模式分析**：
 
-3. **SEO and Content Strategy Analysis**:
-   - Extract content-rich websites
-   - Use AI to analyze content structure, metadata, and keyword usage
-   - Generate SEO recommendations and content strategy insights
+   - 提取同一行业的多个网站
+   - 使用 AI 识别常见模式和最佳实践
+   - 生成行业标准方法报告
 
-4. **Competitive Analysis**:
-   - Extract competitor websites
-   - Use AI to compare features, UX patterns, and technical implementations
-   - Generate a competitive analysis report with strengths and weaknesses
+2. **自动化组件库生成**：
 
-## Architecture
+   - 提取多个网站
+   - 使用 AI 识别和分类 UI 组件
+   - 生成带有文档的统一组件库
 
-The application is built with a modular architecture designed for flexibility and performance:
+3. **SEO 和内容策略分析**：
+
+   - 提取内容丰富的网站
+   - 使用 AI 分析内容结构、元数据和关键词使用
+   - 生成 SEO 建议和内容策略见解
+
+4. **竞争分析**：
+
+   - 提取竞争对手网站
+   - 使用 AI 比较功能、UX 模式和技术实现
+   - 生成包含优势和劣势的竞争分析报告
+
+## 架构
+
+应用程序采用模块化架构设计，注重灵活性和性能：
 
 ```
 ┌───────────────────────────────────────────────────────────────────┐
-│                    Website Extractor Application                   │
+│                    网站提取器应用程序                                │
 └───────────────────────────────────────────────────────────────────┘
                                   │
                                   ▼
 ┌───────────────────────────────────────────────────────────────────┐
-│                           Flask Web Server                         │
+│                           Flask Web 服务器                         │
 └───────────────────────────────────────────────────────────────────┘
                                   │
                                   ▼
 ┌───────────────────────────────────────────────────────────────────┐
-│                      Extraction Core Processes                     │
+│                      提取核心处理模块                                │
 ├───────────────┬──────────────────┬──────────────────┬─────────────┤
-│  HTTP Client  │ Selenium Renderer │  Content Parser  │ Asset Saver │
+│  HTTP 客户端  │ Selenium 渲染器   │  内容解析器       │ 资源保存器   │
 │ (requests)    │ (WebDriver)       │ (BeautifulSoup)  │ (Zip)       │
 └───────────────┴──────────────────┴──────────────────┴─────────────┘
 ```
 
-### Data Flow
+### 数据流
 
 ```
-┌──────────┐    URL     ┌──────────┐  HTML Content  ┌──────────────┐
-│  User    │───────────▶│ Extractor│───────────────▶│ HTML Parser  │
+┌──────────┐    URL     ┌──────────┐  HTML 内容     ┌──────────────┐
+│  用户    │───────────▶│ 提取器   │───────────────▶│ HTML 解析器   │
 └──────────┘            └──────────┘                └──────────────┘
                              │                             │
-                   Rendering │                             │ Asset URLs
-                     option  │                             │
+                   渲染选项  │                             │ 资源 URL
+                             │                             │
                              ▼                             ▼
                       ┌──────────┐                  ┌──────────────┐
-                      │ Selenium │                  │ Asset        │
-                      │ WebDriver│                  │ Downloader   │
+                      │ Selenium │                  │ 资源         │
+                      │ WebDriver│                  │ 下载器       │
                       └──────────┘                  └──────────────┘
                              │                             │
-                     Rendered│                      Assets │
+                     渲染后  │                      资源   │
                        HTML  │                             │
                              ▼                             ▼
                       ┌──────────────────────────────────────────┐
-                      │            Zip File Creator              │
+                      │            ZIP 文件创建器                │
                       └──────────────────────────────────────────┘
                                           │
                                           ▼
                       ┌──────────────────────────────────────────┐
-                      │      File Download Response to User      │
+                      │      文件下载响应给用户                    │
                       └──────────────────────────────────────────┘
 ```
 
-### Key Components
+### 关键组件
 
-1. **Flask Web Server**: Provides the user interface and handles HTTP requests
-2. **HTTP Client**: Makes requests to fetch website content using the Requests library
-3. **Selenium Renderer**: Optional component for JavaScript rendering and dynamic content
-4. **Content Parser**: Analyzes HTML to extract assets and structure using BeautifulSoup
-5. **Asset Downloader**: Downloads all discovered assets with sophisticated retry logic
-6. **ZIP Creator**: Packages everything into an organized downloadable archive
+1. **Flask Web 服务器**：提供用户界面并处理 HTTP 请求
+2. **HTTP 客户端**：使用 Requests 库发出请求以获取网站内容
+3. **Selenium 渲染器**：用于 JavaScript 渲染和动态内容的可选组件
+4. **内容解析器**：使用 BeautifulSoup 分析 HTML 以提取资源和结构
+5. **资源下载器**：下载所有发现的资源，具有复杂的重试逻辑
+6. **ZIP 创建器**：将所有内容打包成有组织的可下载归档文件
 
-### Processing Stages
+### 处理阶段
 
-1. **URL Submission**: User provides a URL and rendering options
-2. **Content Acquisition**: HTML content is fetched (with or without JavaScript rendering)
-3. **Structure Analysis**: HTML is parsed and analyzed for assets and components
-4. **Asset Discovery**: All linked resources are identified and categorized
-5. **Parallel Downloading**: Assets are downloaded with optimized concurrent requests
-6. **Organization & Packaging**: Files are organized and compressed into a ZIP archive
+1. **URL 提交**：用户提供 URL 和渲染选项
+2. **内容获取**：获取 HTML 内容（是否使用 JavaScript 渲染）
+3. **结构分析**：解析和分析 HTML 以获取资源和组件
+4. **资源发现**：识别和分类所有链接的资源
+5. **并行下载**：使用优化的并发请求下载资源
+6. **组织和打包**：将文件组织并压缩成 ZIP 归档文件
 
-For more detailed technical information, see [app_architecture.md](app_architecture.md).
+有关更详细的技术信息，请参阅 [app_architecture.md](app_architecture.md)。
 
-## Limitations
+## 限制
 
-- Some websites implement anti-scraping measures that may block extraction
-- Content requiring authentication may not be accessible
-- Very large websites may time out or require multiple extraction attempts
-- Some CDN-specific URL formats may fail to download (especially those with transformation parameters)
+- 某些网站实施了反爬虫措施，可能会阻止提取
+- 需要身份验证的内容可能无法访问
+- 非常大的网站可能会超时或需要多次提取尝试
+- 某些特定于 CDN 的 URL 格式可能无法下载（特别是那些带有转换参数的）
 
-## License
+## 许可证
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+此项目在 MIT 许可证下授权 - 有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
 
-## Author
+## 作者
 
-Created by Sirio Berati
+由 Sirio Berati 创建
 
 - Instagram: [@heysirio](https://instagram.com/heysirio)
 - Instagram: [@siriosagents](https://instagram.com/siriosagents)
 
-## Contributing
+## 贡献
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+欢迎贡献！请随时提交 Pull Request。
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork 仓库
+2. 创建您的功能分支 (`git checkout -b feature/amazing-feature`)
+3. 提交您的更改 (`git commit -m '添加一些令人惊喜的功能'`)
+4. 推送到分支 (`git push origin feature/amazing-feature`)
+5. 打开 Pull Request
 
-## Acknowledgments
+## 致谢
 
-- This project uses [Flask](https://flask.palletsprojects.com/) for the web framework
-- [Selenium](https://www.selenium.dev/) for advanced rendering
-- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) for HTML parsing
-- All the open source libraries that made this project possible 
+- 此项目使用 [Flask](https://flask.palletsprojects.com/) 作为 Web 框架
+- [Selenium](https://www.selenium.dev/) 用于高级渲染
+- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) 用于 HTML 解析
+- 所有使此项目成为可能的开源库
